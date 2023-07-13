@@ -80,7 +80,53 @@ int WINAPI WinMain(_In_HINSTANCE hinstance, _In_opt_HINSTANCE hPrevInstance,
 
 	Input_Initialize();                //入力制御機能
 
+//シーンマネージャ初期化処理
+//エラーが発生したら、終了する
+	if (SceneManager_Initialize(E_TITLE) == D_ERROR)
+	{
+		return D_ERROR;
+	}
 
+
+	//描画先画面を裏にする
+	SetDrawScreen(DX_SCREEN_BACK);
+
+
+	//文字サイズを設定
+	SetFontSize(FONT_SIZE);
+
+
+	//ゲームループ
+	while (ProcessMessage() != D_ERROR && Input_Escape() == FALSE)
+	{
+		//入力制限機能更新処理
+		Input_Update();
+
+		//シーンマネージャ更新処理
+		SceneManager_Update();
+
+
+		//画面クリア
+		ClearDrawScreen();
+
+
+		//シーンマネージャ描画処理
+		SceneManager_Draw();
+
+
+
+		//フレームレート制御処理
+		FreamControl_Update();
+
+
+		//画面の内容を表画面に反映
+		ScreenFlip();
+
+	}
+	//Dxライブラリ使用の終了処理
+	DxLib_End();
+
+	return 0;
 
 
 }
