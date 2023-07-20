@@ -65,7 +65,7 @@ int GameClearScene_Initialize(void)
 
 
 	//エラーチェック
-	if (GameClearImage == -1)
+	if (GameClearImage == D_ERROR)
 	{
 		ret = -1;
 	}

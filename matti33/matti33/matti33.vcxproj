@@ -135,11 +135,13 @@
     <ClCompile Include="FreamControl.cpp" />
     <ClCompile Include="GameClearScene.cpp" />
     <ClCompile Include="GameMainScene.cpp" />
+    <ClCompile Include="GameOverScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FreamControl.h" />
     <ClInclude Include="GameClearScane.h" />
     <ClInclude Include="GameMainScene.h" />
+    <ClInclude Include="GameOverScene_h.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
