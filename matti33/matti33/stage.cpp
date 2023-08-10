@@ -249,9 +249,287 @@ void CreateBlock(void)
 				}
 				else
 				{
-					B
+					Block[i][j].flg = TRUE;
+					Block[i][j].x = (j - 1) * BLOCKSIZE;
+					Block[i][j].y = (i - 1) * BLOCKSIZE;
+					Block[i][j].width = BLOCKSIZE;
+					Block[i][j].height = BLOCKSIZE;
+					Block[i][j].image = GetRand(7) + 1;//1～8の乱数
+				}
+			}
+		}
+
+		/*for(i=1;i<HEIGHT-1;i++)
+		{
+			 for(j=1;j<WIDTH-1;j++)
+			 {
+				if(Block[i][j].image==NULL)
+
+				{
+				   Block[i][j].image=GetRand(7)+1;
+				}
+		}
+}*/
+//ブロック連鎖チェック
+		for (i = 1; i < HEIGHT - 1; i++)
+		{
+			for (j = 1; j < WIDTH - 1; j++)
+			{
+				Check += combo_check(i, j);
+
+			}
+		}
+	} while (Check != 0);
+
+	for (i = 0; i < ITEM_MAX; i++)
+	{
+		Item[i] = 0;
+	}
+}
+
+/**************************************
+
+*ステージ制御機能：ブロック選択処理
+
+*引数：なし
+
+*戻り値：なし
+
+***************************************/
+void SelectBlock(void)
+{
+
+	int TmpBlock;
+	int Result;
+
+	//カーソル座標の取得
+	Select[SELECT_CURSOR].x = GetMousePositionX() / BLOCKSIZE;
+	Select[SELECT_CURSOR].y = GetMousePositionY() / BLOCKSIZE;
+
+	//選択ブロックの範囲を制御
+	if (Select[SELECT_CURSOR].x < 0)
+	{
+		Select[SELECT_CURSOR].x = 0;
+	}
+	if (Select[SELECT_CURSOR].x > WIDTH - 3)
+	{
+		Select[SELECT_CURSOR].x = WIDTH - 3;
+	}
+	if (Select[SELECT_CURSOR].y < 0)
+	{
+		Select[SELECT_CURSOR].y = 0;
+	}
+	if (Select[SELECT_CURSOR].y > HEIGHT - 3)
+	{
+		Select[SELECT_CURSOR].y = HEIGHT - 3;
+	}
+
+	//クリックでブロックを選択
+	if (GetKeyFlg(MOUSE_INPUT_LEFT)) {
+		//クリック効果音
+		PlaySoundMem(ClickSE, DX_PLAYTYPE_BACK);
+
+		if (ClickStatus == E_NONE) {
+			Select[NEXT_CURSOR].x = Select[SELECT_CURSOR].x;
+			Select[NEXT_CURSOR].y = Select[SELECT_CURSOR].y;
+			ClickStatus = E_ONCE;
+		}
+		else if (ClickStatus == E_ONCE &&
+			((abs(Select[NEXT_CURSOR].x - Select[SELECT_CURSOR].x)
+				== 1 &&
+				(abs(Select[NEXT_CURSOR].y - Select[SELECT_CURSOR].y)
+					== 0)) ||
+				(abs(Select[NEXT_CURSOR].x - Select[SELECT_CURSOR].x)
+					== 0 &&
+					(abs(Select[NEXT_CURSOR].y - Select[SELECT_CURSOR].y) ==
+						1)))
+
+		{
+
+			Select[TMP_CURSOR].x = Select[SELECT_CURSOR].x;
+			Select[TMP_CURSOR].y = Select[SELECT_CURSOR].y;
+			ClickStatus = E_SECOND;
+		}
+
+	}
+
+
+	//選択ブロックを交換する
+	if (ClickStatus == E_SECOND)
+	{
+		TmpBlock = Block[Select[NEXT_CURSOR].y + 1][Select[NEXT_CURSOR].x + 1].image;
+
+		Block[Select[NEXT_CURSOR].y + 1][Select[NEXT_CURSOR].x + 1].image = Block[Select[NEXT_CURSOR].y + 1][Select[TMP_CURSOR].x + 1].image;
+
+		Block[Select[TMP_CURSOR].y + 1][Select[TMP_CURSOR].x + 1].image = TmpBlock;
+
+
+		//連鎖が3つ以上か調べる
+		Result = 0;
+		Result += combo_check(Select[NEXT_CURSOR].y + 1, Select[NEXT_CURSOR].x + 1);
+		Result += combo_check(Select[TMP_CURSOR].y + 1, Select[TMP_CURSOR].x + 1);
+
+		//連鎖が３未満なら選択ブロックを元に戻す
+		if (Result == 0)
+		{
+			int TmpBlock = Block[Select[NEXT_CURSOR].y + 1][Select[NEXT_CURSOR].x + 1].image;
+			Block[Select[NEXT_CURSOR].y + 1][Select[NEXT_CURSOR].x + 1].image = Block[Select[TMP_CURSOR].y + 1][Select[TMP_CURSOR].x + 1].image;
+			Block[Select[TMP_CURSOR].y + 1][Select[TMP_CURSOR].x + 1].image = TmpBlock;
+
+		}
+		else
+		{
+			//連鎖が３つ以上ならブロックを消しブロック移動処理へ移行する
+			Stage_State = 1;
+		}
+
+		//次にクリックできるようにClockFlagを０にする
+		ClickStatus = E_NONE;
+	}
+
+}
+
+/**************************************
+
+*ステージ制御機能：フェードアウト処理
+
+*引数：なし
+
+*戻り値：なし
+
+***************************************/
+void FadeOutBlock(void)
+{
+	static int BlendMode = 255;
+	int i, j;
+
+	//フェードアウト効果音
+	if (CheckSoundMem(FadeOutSE) == 0)
+	{
+		PlaySoundMem(FadeOutSE, DX_PLAYTYPE_BACK);
+
+	}
+
+	//描画モードをアルファブレンドにする
+	SetDrawBlendMode(DX_BLENDGRAPHTYPE_ALPHA, BlendMode);
+	for (i = 1; i < HEIGHT - 1; i++)
+	{
+		for (j = 1; j < WIDTH - 1; j++)
+		{
+			if (Block[i][j].image == 0)
+			{
+				DrawGraph(Block[i][j].x, Block[i][j].y, BlockImage[Block[i][j].backup], TRUE);
+			}
+		}
+	}
+
+	//描画モードをノーブレンドにする
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+
+	BlendMode -= 5;
+
+	if (BlendMode == 0)
+	{
+		BlendMode = 255;
+		Stage_State = 2;
+		StopSoundMem(FadeOutSE);
+	}
+}
+
+/**************************************
+
+*ステージ制御機能：ブロック移動処理
+
+*引数：なし
+
+*戻り値：なし
+
+***************************************/
+void MoveBlock(void)
+{
+	int i, j, k;
+	//ブロック移動効果音
+	PlaySoundMem(MoveBlockSE, DX_PLAYTYPE_BACK);
+
+	//↓へ移動する処理
+	for (i = 1; i < HEIGHT - 1; i++)
+	{
+		for (j = 1; j < WIDTH - 1; j++)
+		{
+			if (Block[i][j].image == 0)
+			{
+				for (k = i; k > 0; k--)
+				{
+					Block[k][j].image = Block[k - 1][j].image;
+					Block[k - 1][j].image = 0;
 				}
 			}
 		}
 	}
+
+	//空のブロックを生成する処理
+	for (i = 1; i < HEIGHT - 1; i++)
+	{
+		for (j = 1; j < WIDTH - 1; j++)
+		{
+			if (Block[i][j].image == 0)
+			{
+				Block[i][j].image = GetRand(7) + 1;
+			}
+		}
+	}
+
+
+	//連鎖チェックへ移行する
+	Stage_State = 3;
 }
+
+/**************************************
+
+*ステージ制御機能：連鎖チェック処理
+
+*引数：なし
+
+*戻り値：なし
+
+***************************************/
+void CheckBlock(void)
+{
+	int Result = 0;
+	int i, j;
+
+	//ブロック連鎖チェック
+	for (i = 1; i < HEIGHT - 1; i++)
+	{
+		for (j = 1; j < WIDTH - 1; j++)
+		{
+			Result += combo_check(i, j);
+		}
+	}
+
+	//連鎖が無くなればブロック選択へ
+	//そうでなければブロック移動へ移行して連鎖チェックを継続する
+	if (Result == 0)
+	{
+		//クリアチェック処理へ移行する
+		Stage_State = 4;
+	}
+	else
+	{
+		//連鎖が３つ以上ならブロックを消しブロック移動処理へ移行する
+		Stage_State = 1;
+	}
+}
+
+/**************************************
+
+*ステージ制御機能：クリア条件チェック処理
+
+*引数：なし
+
+*戻り値：なし
+
+* 備考：クリア条件フラグを０とし、各スクールの削除ブロックが
+　　　　　　　レベルよりも数が少なかったらチェック処理を中断してゲームを続行する。
+
+***************************************/
