@@ -18,7 +18,7 @@
 
 *****************************************/
 
-enum Game_MODE
+enum GAME_MODE
 {
 	E_TITLE,
 	E_GAMEMAN,

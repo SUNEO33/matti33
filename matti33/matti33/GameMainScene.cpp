@@ -126,7 +126,7 @@ void GameMainScene_Update(void)
 {
 	switch (Get_StageState())
 	{
-	case 0:
+	    case 0:
 		SelectBlock();     //ブロックを選択する
 		break;
 

@@ -25,7 +25,7 @@
 ****************************************/
 
 
-int StageIntialize(void);
+int StageInitialize(void);
 void CreateBlock(void);
 void SelectBlock(void);
 void StageDraw(void);
