@@ -81,7 +81,7 @@ int GameMainScene_Initialize(void)
 	{
 		if (NumberImage[i] == D_ERROR)
 		{
-			ret = D _ ERROR;
+			ret = D_ERROR;
 
 
 			break;
@@ -93,9 +93,9 @@ int GameMainScene_Initialize(void)
 	if (GameCount == 0)
 	{
 		GameScore = 0;       //スコアの初期化
-		GameLevel = 1;　　　//ゲームレベルの初期化
+		GameLevel = 1;       //ゲームレベルの初期化
 		Set_StageMission(3);    //ミッションの初期化
-		GameCount++;　　　　　　//次回の設定
+		GameCount++;            //次回の設定
 	}
 	else
 	{

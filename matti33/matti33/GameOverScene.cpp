@@ -1,6 +1,6 @@
-#include "GameOverScene,h"
-#include "DxLib,h"
-#include "SceneManager,h"
+#include"GameOverScene.h"
+#include"DxLib.h"
+#include"SceneManager.h"
 
 
 /*************************************

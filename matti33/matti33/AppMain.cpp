@@ -8,7 +8,7 @@
 
 #include "DxLib.h"
 
-#include "FreamContorol.h"
+#include "FreamControl.h"
 
 #include "InputControl.h"
 
@@ -25,6 +25,13 @@
 #define SCREEN_WIDTH     (640)          //スクリーンサイズ（幅）
 #define SCREEN_COLORBIT  (32)           //スクリーンカラービット
 #define FONT_SIZE        (20)           //文字サイズ
+
+
+/*********************************************
+
+*型定義
+
+**********************************************/
 
 
 /*********************************************
