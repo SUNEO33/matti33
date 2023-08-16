@@ -185,7 +185,7 @@ void GameMainScene_Update(void)
 
 void GameMainScene_Draw(void)
 {
-	int posX = 600;
+	int PosX = 600;
 	int tmp_level = GameLevel;
 	int tmp_score = Get_StageScore();
 

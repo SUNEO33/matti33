@@ -10,7 +10,7 @@
 
 #define HEIGHT       (12)    //ブロック配置サイズ（高さ）
 #define WIDTH        (12)    //ブロック配置サイズ（幅）
-#define BLCKSIZE     (48)    //ブロックサイズ
+#define BLOCKSIZE     (48)    //ブロックサイズ
 #define BLOCK_IMAGE_MAX    (10)   //ブロック画像数
 
 
@@ -27,7 +27,7 @@
 
 ************************************/
 
-typedef strukt
+typedef struct
 {
 int flg;
 int x, y;
@@ -37,7 +37,7 @@ int backup;
 }T_Object;
 
 
-typedef strukt
+typedef struct
 {
 	int x;
 	int y;
@@ -65,10 +65,10 @@ int ClickStatus;
 int Stage_State;
 int Stage_Mission;
 int Stage_Score;
-int CkearFlag;
+int ClearFlag;
 
 
-int BlockImage; [BLOCK_IMAGE_MAX] ;   //ブロック画像
+int BlockImage[BLOCK_IMAGE_MAX] ;   //ブロック画像
 int StageImage;                       //背景用画像
 int ClickSE;                          //クリックSE
 int FadeOutSE;                        //フェードアウトSE
@@ -177,7 +177,7 @@ void StageDraw(void) {
 	DrawGraph(0, 0, StageImage, FALSE);
 
 	//アイテムの取得個数を描画
-	for (int = 0; i < ITEM_MAX; i++)
+	for (int i= 0; i < ITEM_MAX; i++)
 	{
 		DrawRotaGraph(540, 245 + i * 30, 0.5f, 0, BlockImage[i + 1], TRUE, 0);
 		DrawFormatString(580, 235 + i * 30, 0xffffff,"%3d",Item[i]);
@@ -242,7 +242,7 @@ void CreateBlock(void)
 		{
 			for (j = 0; j < WIDTH; j++)
 			{
-				if (j == 0 || j == WIDTH - 1 || i == HEIGHT - 1||==0)
+				if (j == 0 || j == WIDTH - 1 || i == HEIGHT - 1||i==0)
 				{
 					Block[i][j].flg = FALSE;
 					Block[i][j].image = NULL;
@@ -341,7 +341,7 @@ void SelectBlock(void)
 					== 0)) ||
 				(abs(Select[NEXT_CURSOR].x - Select[SELECT_CURSOR].x)
 					== 0 &&
-					(abs(Select[NEXT_CURSOR].y - Select[SELECT_CURSOR].y) ==
+					abs(Select[NEXT_CURSOR].y - Select[SELECT_CURSOR].y) ==
 						1)))
 
 		{

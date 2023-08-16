@@ -1,5 +1,7 @@
-#include "GameClearScene.h"
+#include"GameClearScene.h"
+
 #include "Dxlib.h"
+
 #include "SceneManager.h"
 
 
