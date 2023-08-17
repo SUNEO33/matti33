@@ -39,6 +39,10 @@ void Input_Initialize(void)
 	mouse_position_y = NULL;
 }
 
+void Input_Update(void)
+{
+}
+
 
 
 /**************************************

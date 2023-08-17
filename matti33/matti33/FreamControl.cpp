@@ -63,3 +63,7 @@ void FreamControl_Initialize(void)
 	}
 	LastTime = GetNowCount();
 }
+
+void FreamControl_Update(void)
+{
+}
