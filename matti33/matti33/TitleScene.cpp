@@ -84,9 +84,15 @@ void TitleScene_Update(void)
 		PlaySoundMem(TitleBGM, DX_PLAYTYPE_BACK);
 	}
 
+	if (CheckHitKey(KEY_INPUT_A))
+	{
+		Change_Scene(E_GAMEMAIN);
+		StopSoundMem(TitleBGM);
+	}
+
 	if (GetKeyFlg(MOUSE_INPUT_LEFT) == TRUE)
 	{
-		if (GetMousePositionX() > 120 && GetMousePositionX() < 290 && GetMousePositionY() > 260 && GetMousePositionY()<315)
+		if (GetMousePositionX() > 120 && GetMousePositionX() < 290 && GetMousePositionY() > 260 && GetMousePositionY() < 315)
 		{
 			Change_Scene(E_GAMEMAIN);
 			StopSoundMem(TitleBGM);
