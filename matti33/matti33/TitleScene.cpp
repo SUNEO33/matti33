@@ -96,6 +96,7 @@ void TitleScene_Update(void)
 		{
 			Change_Scene(E_GAMEMAIN);
 			StopSoundMem(TitleBGM);
+			
 		}
 		if (GetMousePositionX() > 120 && GetMousePositionX() < 220 && GetMousePositionY() > 345 && GetMousePositionY() < 400)
 		{
