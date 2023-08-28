@@ -39,12 +39,6 @@ void Input_Initialize(void)
 	mouse_position_y = NULL;
 }
 
-void Input_Update(void)
-{
-}
-
-
-
 /**************************************
 
 *入力制御機能：更新処理
@@ -54,8 +48,7 @@ void Input_Update(void)
 *戻り値：なし
 
 ***************************************/
-
-void input_Update(void)
+void Input_Update(void)
 {
 	//マウス入力情報の取得
 	old_button = now_button;
@@ -65,6 +58,8 @@ void input_Update(void)
 	GetMousePoint(&mouse_position_x, &mouse_position_y);
 
 }
+
+
 
 
 /**************************************

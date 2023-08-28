@@ -84,11 +84,6 @@ void TitleScene_Update(void)
 		PlaySoundMem(TitleBGM, DX_PLAYTYPE_BACK);
 	}
 
-	if (CheckHitKey(KEY_INPUT_A))
-	{
-		Change_Scene(E_GAMEMAIN);
-		StopSoundMem(TitleBGM);
-	}
 
 	if (GetKeyFlg(MOUSE_INPUT_LEFT) == TRUE)
 	{
